@@ -5,6 +5,7 @@ using UnityEngine;
 
 public enum PlayerInput
 {
+    none,
     keyUp,
     keyDown,
     keyLeft,
@@ -12,11 +13,11 @@ public enum PlayerInput
 }
 public class InputManager : MonoBehaviour
 {
-    [SerializeField] private PlayerInput playerCurrentInput;
+    [SerializeField] public PlayerInput playerCurrentInput;
     private static InputManager instance;
 
     public static InputManager Instance { get => instance; }
-    public PlayerInput PlayerCurrentInput { get => playerCurrentInput;  }
+    public PlayerInput PlayerCurrentInput { get => playerCurrentInput; }
 
     private void Start()
     {
@@ -35,19 +36,24 @@ public class InputManager : MonoBehaviour
         {
             playerCurrentInput = PlayerInput.keyUp;
         }
-        if (Input.GetKey(KeyCode.S))
+        else if (Input.GetKey(KeyCode.S))
         {
             playerCurrentInput = PlayerInput.keyDown;
         }
-        if (Input.GetKey(KeyCode.A))
+        else if (Input.GetKey(KeyCode.A))
         {
             playerCurrentInput = PlayerInput.keyLeft;
         }
-        if (Input.GetKey(KeyCode.D))
+        else if (Input.GetKey(KeyCode.D))
         {
             playerCurrentInput = PlayerInput.keyRight;
         }
-        
+
+        else
+        {
+            playerCurrentInput = PlayerInput.none;
+        }
+
     }
 
 }

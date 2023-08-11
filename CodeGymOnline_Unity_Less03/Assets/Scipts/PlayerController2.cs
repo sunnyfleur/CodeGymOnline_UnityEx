@@ -7,13 +7,10 @@ public enum PlayerDirection
 {
     Up, Down, Left, Right, NotMoving
 }
-public class PlayerController2 : MonoBehaviour
+public class PlayerController2 : PlayerControllerAbstract
 {
-    [SerializeField] protected PlayerDirection currentDirection=PlayerDirection.NotMoving;
-
-    [Range(0f, 30f)]
-    [SerializeField] protected float objectSpeed = 10f;
-
+    [SerializeField] protected PlayerDirection currentDirection = PlayerDirection.NotMoving;
+   
     [Header("Action")]
     [SerializeField] protected bool isMovingFoward = false;
     [SerializeField] protected bool isMovingBackward = false;
@@ -30,39 +27,41 @@ public class PlayerController2 : MonoBehaviour
         MoveObject();
     }
 
-    public void CheckDirection()
+    protected void CheckDirection()
     {
-        if (InputManager.Instance.PlayerCurrentInput == PlayerInput.keyUp)
+        if (InputManager.Instance.playerCurrentInput == PlayerInput.keyUp)
         {
-            isMovingFoward=true;
+            isMovingFoward = true;
             this.currentDirection = PlayerDirection.Up;
         }
-          
-        if (InputManager.Instance.PlayerCurrentInput == PlayerInput.keyDown)
+
+        else if (InputManager.Instance.playerCurrentInput == PlayerInput.keyDown)
         {
-            isMovingBackward = false;
-            this.currentDirection = PlayerDirection.Up;
-        }  
-        if (InputManager.Instance.PlayerCurrentInput == PlayerInput.keyLeft)
+            isMovingBackward = true;
+            this.currentDirection = PlayerDirection.Down;
+        }
+        else if (InputManager.Instance.playerCurrentInput == PlayerInput.keyLeft)
         {
             isRotating = true;
             this.currentDirection = PlayerDirection.Left;
         }
-        if (InputManager.Instance.PlayerCurrentInput == PlayerInput.keyRight)
+        else if (InputManager.Instance.playerCurrentInput == PlayerInput.keyRight)
         {
             isRotating = true;
             this.currentDirection = PlayerDirection.Right;
         }
         else
         {
-          
+            isMovingFoward = false;
+            isRotating = false;
+            this.currentDirection = PlayerDirection.NotMoving;
         }
 
     }
-    public void RotateObject()
+    protected void RotateObject()
     {
-        float rotateRightAngle = 4f;
-        float rotateLeftAngle = -4f;
+        float rotateRightAngle = 1f;
+        float rotateLeftAngle = -1f;
         Vector3 currentAngle = transform.parent.eulerAngles;
         if (currentDirection == PlayerDirection.Left && this.isRotating == true)
         {
@@ -76,14 +75,14 @@ public class PlayerController2 : MonoBehaviour
         }
     }
 
-    public void MoveObject()
+    protected override void MoveObject()
     {
-        if (isMovingFoward == true)
+        if (this.currentDirection == PlayerDirection.Up)
         {
-            Vector3 movement = transform.forward  * objectSpeed * Time.deltaTime;
+            Vector3 movement = transform.forward * objectSpeed * Time.deltaTime;
             this.transform.parent.position += movement;
         }
-        else if (isMovingBackward == true)
+        else if (this.currentDirection == PlayerDirection.Down)
         {
             Vector3 movement = transform.forward * objectSpeed * Time.deltaTime;
             this.transform.parent.position -= movement;

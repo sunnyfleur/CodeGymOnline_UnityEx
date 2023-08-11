@@ -5,92 +5,76 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class PlayerController : MonoBehaviour
+public enum TargetEnum
 {
-    //Header
-    [Header("vari")]
-    //Set a range of choice
-    [Range(10f, 19f)]
-    [SerializeField] protected float speed = 10f;
+    TopLeft, TopRight, BottomLeft, BottomRight
+}
+public class PlayerController : PlayerControllerAbstract
+{
+    [SerializeField] protected Transform topLeftTarget;
+    [SerializeField] protected Transform topRightTarget;
+    [SerializeField] protected Transform bottomLeftTarget;
+    [SerializeField] protected Transform bottomRightTarget;
 
-    //Display in ...
-    [ContextMenu("Menu")]
-    private void MyContextMenu()
-    {
-        Debug.Log("lof");
-    }
-    [SerializeField] protected List<Vector3> checkPoints;
-    [SerializeField] protected GameObject roadCorner;
-    [SerializeField] protected int currentCheckPoint = 1;
-    [SerializeField] protected float rotateSpeed = 30f;
-    [SerializeField] protected Vector3 rotationAxis = Vector3.up;
-    [SerializeField] protected float distance;
-    [SerializeField] Vector3 current;
+    [SerializeField] private Transform currentTarget;
+    [SerializeField] private TargetEnum nextTarget = TargetEnum.TopLeft; // Gán tr?ng thái ??u tiên là TopLeft
 
-    [SerializeField] protected int time;
-    public void Start()
+    // Start is called before the first frame update
+    void Start()
     {
-       
+        currentTarget = topLeftTarget;
     }
-    public void FixedUpdate()
+
+    // Update is called once per frame
+    void Update()
     {
         MoveObject();
-        Debug.Log(Time.time);
     }
 
-    public void MoveObject()
+    protected override void MoveObject()
     {
-        this.current = checkPoints[this.CheckPosition()];
-        transform.parent.position = Vector3.MoveTowards(transform.parent.position, current, speed * Time.deltaTime);
-    }
-    public void Reset()
-    {
-        LoadCheckPoints();
-    }
+        Vector3 targetPosition = currentTarget.position;
+        Vector3 moveDirection = targetPosition - transform.position;
 
-    public void RotateObject()
-    {
+        float distance = moveDirection.magnitude;
 
-    }
-    public int CheckPosition()
-    {
-        this.distance = (transform.parent.position - checkPoints[this.currentCheckPoint]).magnitude;
-        if (distance < 0.1)
+        if (distance > 0.1f)
         {
-            if (this.currentCheckPoint > 3)
-            {
-                this.currentCheckPoint = 0;
-            }
-            
-            this.currentCheckPoint += 1;
-            Rotate();
+            // Khi ch?a t?i thì v?n di chuy?n v? ?i?m focus
+            transform.position = Vector3.MoveTowards(transform.position, currentTarget.position, objectSpeed * Time.deltaTime);
+        }
+        else
+        {
+            // Chuy?n target
+            SetNextTarget(nextTarget);
         }
 
-        return this.currentCheckPoint;
+        // Thay ??i góc quay theo h??ng target object
+        Vector3 direction = currentTarget.position - transform.position;
+        Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
+        transform.rotation = targetRotation;
     }
 
-    public void Rotate()
+    private void SetNextTarget(TargetEnum target)
     {
-        Vector3 direction= current-transform.parent.position;
-        Quaternion rotationAngle = Quaternion.LookRotation(direction, Vector3.up);
-        transform.parent.rotation = rotationAngle;
-    }
-    public void LoadCheckPoints()
-    {
-        LoadRoadCorner();
-        Transform[] Corners = roadCorner.GetComponentsInChildren<Transform>();
-
-        foreach (Transform transform in Corners)
+        switch (target)
         {
-            checkPoints.Add(transform.position);
+            case TargetEnum.TopLeft:
+                currentTarget = topLeftTarget;
+                nextTarget = TargetEnum.TopRight;
+                break;
+            case TargetEnum.TopRight:
+                currentTarget = topRightTarget;
+                nextTarget = TargetEnum.BottomLeft;
+                break;
+            case TargetEnum.BottomLeft:
+                currentTarget = bottomLeftTarget;
+                nextTarget = TargetEnum.BottomRight;
+                break;
+            case TargetEnum.BottomRight:
+                currentTarget = bottomRightTarget;
+                nextTarget = TargetEnum.TopLeft;
+                break;
         }
-    }
-
-    public void LoadRoadCorner()
-    {
-        if (roadCorner == null)
-            this.roadCorner = GameObject.Find("RoadCorner");
-
-        else Debug.Log("No road corner found");
     }
 }
