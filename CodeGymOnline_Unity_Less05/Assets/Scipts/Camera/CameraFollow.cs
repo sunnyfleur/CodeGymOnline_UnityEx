@@ -22,7 +22,7 @@ public class CameraFollow : MonoBehaviour
             this.targetObject = GameObject.Find("Player").transform;    
     }
 
-    void Update()
+    void LateUpdate()
     {
         FollowOject();
     }
