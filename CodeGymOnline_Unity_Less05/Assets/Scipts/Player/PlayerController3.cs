@@ -51,8 +51,7 @@ public class PlayerController3 : PlayerControllerAbstract
     protected override void MoveObject()
     {
         moveDirection = new Vector3(InputManager.Instance.InputHorizontal, 0, InputManager.Instance.InputVertical);
-        transform.Translate(moveDirection);
-
+        transform.TransformDirection(moveDirection);
         rigidBody.AddForce(moveDirection,ForceMode.Force);
     }
     protected void CheckBraking()
