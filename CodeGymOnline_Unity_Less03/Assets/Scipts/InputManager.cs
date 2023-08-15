@@ -27,9 +27,14 @@ public class InputManager : MonoBehaviour
     }
     private void Update()
     {
+     
         CheckInput();
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        
+    }
     public void CheckInput()
     {
         if (Input.GetKey(KeyCode.W))

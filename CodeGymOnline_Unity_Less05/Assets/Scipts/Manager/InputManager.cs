@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum PlayerInput
-{
-    none,
-    keyUp,
-    keyDown,
-    keyLeft,
-    keyRight
-}
+
 public class InputManager : MonoBehaviour
 {
-    [SerializeField] public PlayerInput playerCurrentInput;
+    [SerializeField] protected float inputHorizontal;
+    [SerializeField] protected float inputVertical;
+    [SerializeField] protected float inputRotation;
+    [SerializeField] protected bool isBraking;
+
     private static InputManager instance;
 
     public static InputManager Instance { get => instance; }
-    public PlayerInput PlayerCurrentInput { get => playerCurrentInput; }
+    public float InputHorizontal { get => inputHorizontal; }
+    public float InputVertical { get => inputVertical; }
+    public float InputRotation { get => inputRotation;  }
+    public bool IsBraking { get => isBraking;  }
 
     private void Start()
     {
@@ -27,44 +27,36 @@ public class InputManager : MonoBehaviour
     }
     private void Update()
     {
-        CheckInput();
+        CheckMovementInput();
+        CheckSystemInput();
     }
-
-    public void CheckInput()
+    public void CheckMovementInput()
     {
-        if (Input.GetKey(KeyCode.W))
-        {
-            playerCurrentInput = PlayerInput.keyUp;
-        }
-        else if (Input.GetKey(KeyCode.S))
-        {
-            playerCurrentInput = PlayerInput.keyDown;
-        }
-        else if (Input.GetKey(KeyCode.A))
-        {
-            playerCurrentInput = PlayerInput.keyLeft;
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            playerCurrentInput = PlayerInput.keyRight;
-        }
+        this.inputHorizontal = Input.GetAxisRaw("Horizontal");
+        this.inputVertical = Input.GetAxisRaw("Vertical");
+        
+    }
+    public void CheckBreaking()
+    {
+        if (!Input.GetKeyDown(KeyCode.Space)) return;
 
-        else if (Input.GetKeyDown(KeyCode.M))
+        else this.isBraking = true;
+    }
+    public void CheckSystemInput()
+    {
+        if (Input.GetKeyDown(KeyCode.M))
         {
             GamePlayManager.Instance.CurrentGameState = DriveMode.ManualControl;
         }
-            
+
         else if (Input.GetKeyDown(KeyCode.N))
         {
             GamePlayManager.Instance.CurrentGameState = DriveMode.AutomaticControl;
         }
-           
-
-        else
+        else if(Input.GetKeyDown(KeyCode.B))
         {
-            playerCurrentInput = PlayerInput.none;
+            GamePlayManager.Instance.CurrentGameState = DriveMode.PhysicControl;
         }
-
     }
 
 }

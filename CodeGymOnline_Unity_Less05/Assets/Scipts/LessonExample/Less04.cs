@@ -4,15 +4,23 @@ using UnityEngine;
 
 public class Less04 : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] protected Rigidbody body;
+    float force = 10;
+
+    public void LoadRigidBody()
     {
+        body = GetComponent<Rigidbody>();
+    }
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            body.AddForce(Vector3.up*force, ForceMode.Impulse);
+        }
+        
+
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

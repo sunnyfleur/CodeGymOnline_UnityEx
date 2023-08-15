@@ -3,89 +3,45 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public enum PlayerDirection
+public class PlayerController2 : MonoBehaviour
 {
-    Up, Down, Left, Right, NotMoving
-}
-public class PlayerController2 : PlayerControllerAbstract
-{
-    [SerializeField] protected PlayerDirection currentDirection = PlayerDirection.NotMoving;
-   
-    [Header("Action")]
-    [SerializeField] protected bool isMovingFoward = false;
-    [SerializeField] protected bool isMovingBackward = false;
-    [SerializeField] protected bool isRotating = false;
+   /*
+    [SerializeField] protected Vector3 currentDirection;
+    [SerializeField] protected CharacterController characterController;
 
     void Start()
     {
-
+        LoadCharacterController();
+    }
+    private void Reset()
+    {
+        LoadCharacterController();
     }
     void Update()
-    {
-        CheckDirection();
-        RotateObject();
+    {       
+        CheckDirection();       
         MoveObject();
     }
 
+    protected void LoadCharacterController()
+    {
+        if (this.characterController != null) return;
+        this.characterController=GetComponentInParent<CharacterController>();
+    }
     protected void CheckDirection()
     {
-        if (InputManager.Instance.playerCurrentInput == PlayerInput.keyUp)
-        {
-            isMovingFoward = true;
-            this.currentDirection = PlayerDirection.Up;
-        }
-
-        else if (InputManager.Instance.playerCurrentInput == PlayerInput.keyDown)
-        {
-            isMovingBackward = true;
-            this.currentDirection = PlayerDirection.Down;
-        }
-        else if (InputManager.Instance.playerCurrentInput == PlayerInput.keyLeft)
-        {
-            isRotating = true;
-            this.currentDirection = PlayerDirection.Left;
-        }
-        else if (InputManager.Instance.playerCurrentInput == PlayerInput.keyRight)
-        {
-            isRotating = true;
-            this.currentDirection = PlayerDirection.Right;
-        }
-        else
-        {
-            isMovingFoward = false;
-            isRotating = false;
-            this.currentDirection = PlayerDirection.NotMoving;
-        }
-
+        this.currentDirection = new Vector3(InputManager.Instance.InputVertical, 0, InputManager.Instance.InputHorizontal);
     }
+    
     protected void RotateObject()
     {
-        float rotateRightAngle = 1f;
-        float rotateLeftAngle = -1f;
-        Vector3 currentAngle = transform.parent.eulerAngles;
-        if (currentDirection == PlayerDirection.Left && this.isRotating == true)
-        {
-            transform.parent.eulerAngles = currentAngle + new Vector3(0f, rotateLeftAngle, 0f);
-            this.isRotating = false;
-        }
-        if (currentDirection == PlayerDirection.Right && this.isRotating == true)
-        {
-            transform.parent.eulerAngles = currentAngle + new Vector3(0f, rotateRightAngle, 0f);
-            this.isRotating = false;
-        }
+        
     }
+   
 
     protected override void MoveObject()
     {
-        if (this.currentDirection == PlayerDirection.Up)
-        {
-            Vector3 movement = transform.forward * objectSpeed * Time.deltaTime;
-            this.transform.parent.position += movement;
-        }
-        else if (this.currentDirection == PlayerDirection.Down)
-        {
-            Vector3 movement = transform.forward * objectSpeed * Time.deltaTime;
-            this.transform.parent.position -= movement;
-        }
+        characterController.Move(currentDirection*objectSpeed*Time.deltaTime);
     }
+     */
 }

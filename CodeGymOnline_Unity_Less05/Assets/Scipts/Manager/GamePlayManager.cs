@@ -7,6 +7,7 @@ public enum DriveMode
 {
     AutomaticControl,
     ManualControl,
+    PhysicControl,
     None
 }
 public class GamePlayManager : MonoBehaviour
@@ -14,6 +15,7 @@ public class GamePlayManager : MonoBehaviour
     private static GamePlayManager instance;
     [SerializeField] protected GameObject manualController;
     [SerializeField] protected GameObject automaticController;
+    [SerializeField] protected GameObject physicController;
     [SerializeField] private DriveMode currentGameState;
 
     public static GamePlayManager Instance { get => instance; }
@@ -39,6 +41,7 @@ public class GamePlayManager : MonoBehaviour
     {
         LoadAutomaticControl();
         LoadManualControl();
+        LoadPlayerPhysicController();
     }
     public void LoadManualControl()
     {
@@ -53,23 +56,36 @@ public class GamePlayManager : MonoBehaviour
         else
             this.automaticController = GameObject.Find("PlayerAutomaticController");
     }
-
+    public void LoadPlayerPhysicController()
+    {
+        if(this.physicController != null) return;
+        this.physicController = GameObject.Find("PlayerPhysicController");
+    }
     public void CheckState(GameObject manualControl, GameObject automaticControl)
     {
         if(this.currentGameState== DriveMode.ManualControl)
         {
             automaticControl.SetActive(false);
             manualControl.SetActive(true);
+            physicController.SetActive(false);
         }
         else if(this.currentGameState == DriveMode.AutomaticControl)
         {
             manualControl.SetActive(false);
-            automaticControl.SetActive(true);          
+            automaticControl.SetActive(true);
+            physicController.SetActive(false);
+        }
+        else if(this.currentGameState==DriveMode.PhysicControl)
+        {
+            manualControl.SetActive(false);
+            automaticControl.SetActive(false) ;
+            physicController.SetActive(true) ;
         }
         else
         {
             manualControl.SetActive(false);
-            automaticControl.SetActive(false) ;
+            automaticControl.SetActive(false);
+            physicController.SetActive(true);
         }
     }
 
