@@ -28,19 +28,22 @@ public class InputManager : MonoBehaviour
     private void Update()
     {
         CheckMovementInput();
+
         CheckSystemInput();
     }
     public void CheckMovementInput()
     {
-        this.inputHorizontal = Input.GetAxisRaw("Horizontal");
-        this.inputVertical = Input.GetAxisRaw("Vertical");
+        this.inputHorizontal = Input.GetAxis("Horizontal");
+        this.inputVertical = Input.GetAxis("Vertical");
         
     }
-    public void CheckBreaking()
-    {
-        if (!Input.GetKeyDown(KeyCode.Space)) return;
-
-        else this.isBraking = true;
+    public void CheckBraking()
+    {        
+        if (Input.GetKeyDown(KeyCode.Space)==true)
+        {
+            this.isBraking = true;
+        }      
+        else { this.isBraking = false; }
     }
     public void CheckSystemInput()
     {

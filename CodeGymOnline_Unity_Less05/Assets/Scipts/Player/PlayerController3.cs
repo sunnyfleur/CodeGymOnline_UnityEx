@@ -38,14 +38,11 @@ public class PlayerController3 : PlayerControllerAbstract
     public void LoadGameObject()
     {
         if (this.targetObject != null) return;
-
         this.targetObject = GameObject.Find("Player");
-
     }
     public void LoadRigidBody()
     {
         if (rigidBody != null) return;
-
         this.rigidBody=targetObject.GetComponent<Rigidbody>();
     }
     protected override void MoveObject()

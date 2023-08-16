@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum DriveMode
 {
@@ -17,9 +18,13 @@ public class GamePlayManager : MonoBehaviour
     [SerializeField] protected GameObject automaticController;
     [SerializeField] protected GameObject physicController;
     [SerializeField] private DriveMode currentGameState;
+    [SerializeField] public bool isOverDamaged=false;
+
+
 
     public static GamePlayManager Instance { get => instance; }
     public DriveMode CurrentGameState { get => currentGameState; set => currentGameState = value; }
+    
 
     void Start()
     {
@@ -36,12 +41,14 @@ public class GamePlayManager : MonoBehaviour
     private void Update()
     {   
         CheckState(manualController,automaticController);
+        CheckCondition();
     }
     public void LoadController()
     {
         LoadAutomaticControl();
         LoadManualControl();
         LoadPlayerPhysicController();
+
     }
     public void LoadManualControl()
     {
@@ -49,6 +56,7 @@ public class GamePlayManager : MonoBehaviour
         else
             this.manualController = GameObject.Find("PlayerManualController");
     }
+
 
     public void LoadAutomaticControl()
     {
@@ -89,4 +97,16 @@ public class GamePlayManager : MonoBehaviour
         }
     }
 
+    private void ResetScene()
+    {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex; 
+        SceneManager.LoadScene(currentSceneIndex);
+    }
+
+    private void CheckCondition()
+    {
+        if (!isOverDamaged) return;
+
+        this.ResetScene();  
+    }
 }

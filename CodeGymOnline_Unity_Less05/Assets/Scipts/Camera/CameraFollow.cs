@@ -7,6 +7,7 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] protected Transform targetObject;
     [SerializeField] protected float followSpeed = 3f;
     [SerializeField] protected Vector3 offset = new Vector3(3f, 5f, 7f);
+   
     void Start()
     {
         LoadPlayerObject();
@@ -29,9 +30,9 @@ public class CameraFollow : MonoBehaviour
 
     public void FollowOject()
     {
-        Vector3 targetOffsetPosition= targetObject.position+offset;
-        Vector3 cameraNewPosition = Vector3.Lerp(transform.parent.position, targetOffsetPosition, followSpeed*Time.deltaTime);
-        transform.parent.position = cameraNewPosition;
+        Vector3 desiredPosition= targetObject.position+offset;
+        Vector3 smoothedPosition = Vector3.Lerp(desiredPosition, offset, followSpeed*Time.deltaTime);
+        transform.parent.position = smoothedPosition;
         transform.parent.LookAt(targetObject.position);
     }
 }
