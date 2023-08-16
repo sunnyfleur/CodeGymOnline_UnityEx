@@ -6,7 +6,7 @@ public class PlayerImpact : MonoBehaviour
 {    
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.name == "Obstacle")
+        if (other.gameObject.tag == "Obstacle")
         {
             DamageSender.Instance.SendDamage();
         }
