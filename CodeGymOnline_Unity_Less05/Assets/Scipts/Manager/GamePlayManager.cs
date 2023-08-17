@@ -39,6 +39,7 @@ public class GamePlayManager : Singleton<GamePlayManager>
         currentDriveMode = newDriveMode;
 
         if (newDriveMode == DriveMode.None) return;
+
         if(newDriveMode == DriveMode.ManualControl)
         {
             manualController.gameObject.SetActive(true);

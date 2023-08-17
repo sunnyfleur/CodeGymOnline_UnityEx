@@ -20,7 +20,7 @@ public class PlayerWheelsController : MonoBehaviour
 
     public Vector3 moveinput { get; private set; }
 
-    private void Movement()
+    private void Moving()
     {
 
         float force = motorForce * InputManager.Instance.InputVertical;
@@ -50,18 +50,9 @@ public class PlayerWheelsController : MonoBehaviour
             rearRightWheel.brakeTorque = 0;
         }
     }
-
-  
-
-
-    private void Reset()
-    {
-      
-    }
-
     private void Update()
     {
-        Movement();
+        Moving();
     }
 
 }
