@@ -12,14 +12,22 @@ public class State : Singleton<State>
 {
     public GameState currentGameState = GameState.Play;
 
-    private void ChangeState(GameState newState)
+    private void Update()
     {
-        currentGameState = newState;
+        CheckState();
+    }
+    private void CheckState()
+    {
         if (currentGameState == GameState.GameOver)
         {
             HandleGameOver();
+            currentGameState = GameState.Play;            
         }
         if (currentGameState == GameState.Play) return;
+    }
+    public void ChangeState(GameState newState)
+    {
+        currentGameState = newState;
     }
     private void HandlePlaying()
     {
