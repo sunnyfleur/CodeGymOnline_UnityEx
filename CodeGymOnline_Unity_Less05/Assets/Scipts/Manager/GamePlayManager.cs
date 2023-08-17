@@ -11,44 +11,22 @@ public enum DriveMode
     PhysicControl,
     None
 }
-public class GamePlayManager : MonoBehaviour
+public class GamePlayManager : Singleton<GamePlayManager>
 {
-    private static GamePlayManager instance;
     [SerializeField] protected GameObject manualController;
-    [SerializeField] protected GameObject automaticController;
-    [SerializeField] protected GameObject physicController;
-    [SerializeField] private DriveMode currentGameState;
-    [SerializeField] public bool isOverDamaged=false;
-
-
-
-    public static GamePlayManager Instance { get => instance; }
-    public DriveMode CurrentGameState { get => currentGameState; set => currentGameState = value; }
-    
-
+    [SerializeField] public DriveMode currentDriveMode;
+   
     void Start()
     {
-        if (instance != null)
-            Debug.Log("Only one GameManager instance allowed");
-        else instance = this;
-
         LoadController();
     }
     private void Reset()
     {
         LoadController();
     }
-    private void Update()
-    {   
-        CheckState(manualController,automaticController);
-        CheckCondition();
-    }
     public void LoadController()
-    {
-        LoadAutomaticControl();
+    {    
         LoadManualControl();
-        LoadPlayerPhysicController();
-
     }
     public void LoadManualControl()
     {
@@ -56,57 +34,17 @@ public class GamePlayManager : MonoBehaviour
         else
             this.manualController = GameObject.Find("PlayerManualController");
     }
+    public void CheckState(DriveMode newDriveMode)
+    {
+        currentDriveMode = newDriveMode;
 
-
-    public void LoadAutomaticControl()
-    {
-        if (this.automaticController != null) return;
-        else
-            this.automaticController = GameObject.Find("PlayerAutomaticController");
-    }
-    public void LoadPlayerPhysicController()
-    {
-        if(this.physicController != null) return;
-        this.physicController = GameObject.Find("PlayerPhysicController");
-    }
-    public void CheckState(GameObject manualControl, GameObject automaticControl)
-    {
-        if(this.currentGameState== DriveMode.ManualControl)
+        if (newDriveMode == DriveMode.None) return;
+        if(newDriveMode == DriveMode.ManualControl)
         {
-            automaticControl.SetActive(false);
-            manualControl.SetActive(true);
-            physicController.SetActive(false);
+            manualController.gameObject.SetActive(true);
+            currentDriveMode = DriveMode.ManualControl;
         }
-        else if(this.currentGameState == DriveMode.AutomaticControl)
-        {
-            manualControl.SetActive(false);
-            automaticControl.SetActive(true);
-            physicController.SetActive(false);
-        }
-        else if(this.currentGameState==DriveMode.PhysicControl)
-        {
-            manualControl.SetActive(false);
-            automaticControl.SetActive(false) ;
-            physicController.SetActive(true) ;
-        }
-        else
-        {
-            manualControl.SetActive(false);
-            automaticControl.SetActive(false);
-            physicController.SetActive(true);
-        }
-    }
+          
 
-    private void ResetScene()
-    {
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex; 
-        SceneManager.LoadScene(currentSceneIndex);
-    }
-
-    private void CheckCondition()
-    {
-        if (!isOverDamaged) return;
-
-        this.ResetScene();  
     }
 }

@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class PlayerWheelsController : MonoBehaviour
 {
@@ -15,6 +17,8 @@ public class PlayerWheelsController : MonoBehaviour
     [Range(0f, 3000f)]
     [SerializeField] private float motorForce = 1100f;
     [Range(0, 3000f)] private float brakeForce = 4000f;
+
+    public Vector3 moveinput { get; private set; }
 
     private void Movement()
     {
@@ -47,9 +51,9 @@ public class PlayerWheelsController : MonoBehaviour
         }
     }
 
+  
 
 
-    
     private void Reset()
     {
       

@@ -4,27 +4,18 @@ using UnityEngine;
 
 
 
-public class InputManager : MonoBehaviour
+public class InputManager : Singleton<InputManager>
 {
     [SerializeField] protected float inputHorizontal;
     [SerializeField] protected float inputVertical;
     [SerializeField] protected float inputRotation;
     [SerializeField] protected bool isBraking;
 
-    private static InputManager instance;
-
-    public static InputManager Instance { get => instance; }
     public float InputHorizontal { get => inputHorizontal; }
     public float InputVertical { get => inputVertical; }
     public float InputRotation { get => inputRotation;  }
     public bool IsBraking { get => isBraking;  }
 
-    private void Start()
-    {
-        if (instance != null)
-            Debug.Log("Only 1 instance of InputManager allowed");
-        else instance = this;
-    }
     private void Update()
     {
         CheckMovementInput();
@@ -49,16 +40,7 @@ public class InputManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.M))
         {
-            GamePlayManager.Instance.CurrentGameState = DriveMode.ManualControl;
-        }
-
-        else if (Input.GetKeyDown(KeyCode.N))
-        {
-            GamePlayManager.Instance.CurrentGameState = DriveMode.AutomaticControl;
-        }
-        else if(Input.GetKeyDown(KeyCode.B))
-        {
-            GamePlayManager.Instance.CurrentGameState = DriveMode.PhysicControl;
+            GamePlayManager.Instance.currentDriveMode = DriveMode.ManualControl;
         }
     }
 
