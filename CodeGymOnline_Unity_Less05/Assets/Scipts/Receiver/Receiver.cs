@@ -5,7 +5,7 @@ using UnityEngine;
 public class Receiver : Singleton<Receiver>
 {
     [SerializeField] protected int damaged=0;
-    [SerializeField] protected int maxDamaged = 100;
+    [SerializeField] protected int maxDamaged = 50;
     [SerializeField] protected int fuel = 50;
     [SerializeField] protected int capacity = 100;
 
@@ -15,7 +15,7 @@ public class Receiver : Singleton<Receiver>
     }
     public void CheckDead()
     {
-        if (damaged >= 10)
+        if (damaged >= maxDamaged)
             State.Instance.ChangeState(GameState.GameOver);
     }
     public void RenewHealthPoint()
