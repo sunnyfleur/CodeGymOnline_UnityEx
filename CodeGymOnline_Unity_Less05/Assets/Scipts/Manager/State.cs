@@ -15,7 +15,10 @@ public class State : Singleton<State>
     private void ChangeState(GameState newState)
     {
         currentGameState = newState;
-
+        if (currentGameState == GameState.GameOver)
+        {
+            HandleGameOver();
+        }
         if (currentGameState == GameState.Play) return;
     }
     private void HandlePlaying()

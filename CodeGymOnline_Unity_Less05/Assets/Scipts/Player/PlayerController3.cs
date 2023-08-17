@@ -33,7 +33,6 @@ public class PlayerController3 : PlayerControllerAbstract
     {
         this.MoveObject();
         this.RotateObject();
-        this.CheckBraking();
     }
     public void LoadGameObject()
     {
@@ -50,15 +49,6 @@ public class PlayerController3 : PlayerControllerAbstract
         moveDirection = new Vector3(InputManager.Instance.InputHorizontal, 0, InputManager.Instance.InputVertical);
         transform.TransformDirection(moveDirection);
         rigidBody.AddForce(moveDirection,ForceMode.Force);
-    }
-    protected void CheckBraking()
-    {
-        if (InputManager.Instance.IsBraking==true)
-        {
-            Vector3 brakeForceVector = -rigidBody.velocity.normalized * this.brakeForce;
-            rigidBody.AddForce(brakeForceVector, ForceMode.Force);
-        }
-      
     }
     protected void RotateObject()
     {       

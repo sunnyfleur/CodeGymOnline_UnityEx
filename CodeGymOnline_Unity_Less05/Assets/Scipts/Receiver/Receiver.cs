@@ -9,6 +9,11 @@ public class Receiver : Singleton<Receiver>
     [SerializeField] protected int fuel = 50;
     [SerializeField] protected int capacity = 100;
 
+    public void CheckDead()
+    {
+        if (damaged >= 100)
+            State.Instance.currentGameState = GameState.GameOver;
+    }
     public void RenewHealthPoint()
     {
         this.damaged = 0;

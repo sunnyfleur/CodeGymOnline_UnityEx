@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 
@@ -8,7 +9,6 @@ public class InputManager : Singleton<InputManager>
 {
     [SerializeField] protected float inputHorizontal;
     [SerializeField] protected float inputVertical;
-    [SerializeField] protected bool isBraking;
 
     public float InputHorizontal { get => inputHorizontal; }
     public float InputVertical { get => inputVertical; }
