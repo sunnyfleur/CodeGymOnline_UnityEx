@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerCheckPoint : MonoBehaviour
+public class PlayerCheckPoint : Singleton<PlayerCheckPoint>
 {
-    [SerializeField] protected int checkPoint=0;
+    [SerializeField] private int checkPoint = 0;
+
+    public int CheckPoint { get => checkPoint; }
 
     private void Start()
     {
@@ -17,7 +19,7 @@ public class PlayerCheckPoint : MonoBehaviour
     }
     void LogCheckPoint()
     {
-        Debug.Log("Check Point Reached: " + checkPoint);
+        Debug.Log("Check Point Reached: " + CheckPoint);
     }
 
 
@@ -26,7 +28,7 @@ public class PlayerCheckPoint : MonoBehaviour
         if (other.gameObject.tag == "CheckPoint")
         {
             checkPoint += 1;
-            LogCheckPoint();
+            Score.Instance.currentScore = CheckPoint;    
         }
     }
 }
