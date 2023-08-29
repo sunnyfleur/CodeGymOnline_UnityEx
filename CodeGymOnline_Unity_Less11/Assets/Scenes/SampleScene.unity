@@ -503,7 +503,7 @@ MonoBehaviour:
   velocityToObject: {x: 0, y: 0}
   isAttacking: 0
   isMoving: 0
-  spriteRenderer: {fileID: 0}
+  spriteRenderer: {fileID: 1314840855}
 --- !u!1 &1272341972 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2709733785108666167, guid: 74eccdf12985bf44695858a095f23961, type: 3}
@@ -2063,6 +2063,14 @@ PrefabInstance:
     - target: {fileID: 2709733785108666167, guid: 74eccdf12985bf44695858a095f23961, type: 3}
       propertyPath: m_Name
       value: PlayerPrefabs
+      objectReference: {fileID: 0}
+    - target: {fileID: 2709733785589026990, guid: 74eccdf12985bf44695858a095f23961, type: 3}
+      propertyPath: isJumping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2709733785589026990, guid: 74eccdf12985bf44695858a095f23961, type: 3}
+      propertyPath: isRunning
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2709733785589026990, guid: 74eccdf12985bf44695858a095f23961, type: 3}
       propertyPath: jumpForce

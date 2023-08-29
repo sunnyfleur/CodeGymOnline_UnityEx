@@ -15,6 +15,7 @@ public class NPCAnimatorController : MonoBehaviour
     {
         if (instance != null) return;
         instance = this;
+
     }
     void CheckState()
     {
